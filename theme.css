@@ -11,20 +11,20 @@
 
 :root {
     /* Brand colors */
-    --color-primary: #0f766e;       /* teal: headers, nav, links */
-    --color-primary-dark: #115e59;  /* darker teal: hover/active states */
-    --color-accent: #f97360;        /* coral: cards, highlights */
-    --color-accent-dark: #dc5848;   /* darker coral: hover states */
+    --color-primary: #1d4f91;       /* blue: headers, nav, links */
+    --color-primary-dark: #163d6a;  /* darker blue: hover/active states */
+    --color-accent: #d76a1b;        /* dark orange: cards, highlights */
+    --color-accent-dark: #b75a11;   /* deeper orange: hover states */
 
     /* Text */
-    --color-text: #263238;          /* charcoal grey: main body text */
-    --color-text-muted: #455a64;    /* blue-grey: secondary text, links on light bg */
+    --color-text: #2f3943;          /* charcoal grey: main body text */
+    --color-text-muted: #536573;    /* grey-blue: secondary text, links on light bg */
     --color-text-on-dark: #ffffff;  /* text placed over photos/dark overlays */
 
     /* Backgrounds */
-    --color-bg-page: #edf2f1;       /* cool grey: activity/project page background */
+    --color-bg-page: #edf1f4;       /* cool grey: activity/project page background */
     --color-bg-card: #ffffff;       /* white card/container background */
-    --color-bg-overlay: rgba(15, 118, 110, 0.72); /* translucent teal header/hero overlay */
+    --color-bg-overlay: rgba(29, 79, 145, 0.72); /* translucent blue header/hero overlay */
 
     /* Typography */
     --font-body: "Montserrat", sans-serif;
