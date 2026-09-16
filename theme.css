@@ -7,25 +7,27 @@
 /* don't hardcode new colors directly in index.css/project.css.  */
 /* ============================================================ */
 
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+
 :root {
     /* Brand colors */
-    --color-primary: #4a7a6e;       /* deep teal-green: headers, nav, links */
-    --color-primary-dark: #35594f;  /* darker teal: hover/active states */
-    --color-accent: #e0a66a;        /* warm orange: cards, highlights */
-    --color-accent-dark: #c98a49;   /* darker orange: hover states */
+    --color-primary: #0f766e;       /* teal: headers, nav, links */
+    --color-primary-dark: #115e59;  /* darker teal: hover/active states */
+    --color-accent: #f97360;        /* coral: cards, highlights */
+    --color-accent-dark: #dc5848;   /* darker coral: hover states */
 
     /* Text */
-    --color-text: #2d2420;          /* main body text */
-    --color-text-muted: #4d3a2c;    /* secondary text, links on light bg */
+    --color-text: #263238;          /* charcoal grey: main body text */
+    --color-text-muted: #455a64;    /* blue-grey: secondary text, links on light bg */
     --color-text-on-dark: #ffffff;  /* text placed over photos/dark overlays */
 
     /* Backgrounds */
-    --color-bg-page: #f4f4f4;       /* page background on activity/project pages */
+    --color-bg-page: #edf2f1;       /* cool grey: activity/project page background */
     --color-bg-card: #ffffff;       /* white card/container background */
-    --color-bg-overlay: rgba(74, 122, 110, 0.5); /* translucent header/hero overlay */
+    --color-bg-overlay: rgba(15, 118, 110, 0.72); /* translucent teal header/hero overlay */
 
     /* Typography */
-    --font-body: Arial, Helvetica, sans-serif;
+    --font-body: "Montserrat", sans-serif;
 
     /* Shape */
     --radius: 10px;
