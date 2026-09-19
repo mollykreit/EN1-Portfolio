@@ -105,7 +105,7 @@ left sidebar) to make the changes for you. For example:
 Things to personalize:
 
 - [ ] Your name, replacing `Molly Kreitman` everywhere it appears.
-- [ ] Your own header/banner image, replacing `images/header.jpg`.
+- [ ] Your own header/banner image, replacing `images/header.png`.
 - [ ] Your LinkedIn and GitHub links in `index.html`'s social box.
 - [ ] Confirm you have the rights to publish any images you use — swap out
       any placeholder/stock images that aren't yours.
