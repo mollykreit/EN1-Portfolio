@@ -73,6 +73,41 @@ body {
     border-radius: var(--radius);
 }
 
+.airplane-layout {
+    display: grid;
+    grid-template-columns: 7fr 7fr 0.0001fr;
+    gap: 0;
+    margin: 20px 0;
+    align-items: start;
+}
+
+.airplane-layout img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--radius);
+    object-fit: contain;
+}
+
+.airplane-prompt {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: end;
+}
+
+.airplane-photo {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.airplane-instructions {
+    grid-column: 2 / span 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    max-width: 100%;
+    opacity: 0.96;
+}
+
 .proj-desc {
     margin: 20px 0;
     line-height: 1.6;
@@ -128,13 +163,32 @@ pre code, pre code {
     overflow: hidden;
 }
 
-.proj-video-container iframe {
+.proj-video-container iframe,
+.proj-video-container video {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     border: 0;
+}
+
+.snake-video-container {
+    padding-top: 0;
+    margin: 0 auto 20px;
+    width: min(100%, 620px);
+    max-width: 100%;
+    display: block;
+}
+
+.snake-video-container video {
+    position: static;
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--radius);
+    background: #000;
+    aspect-ratio: 16 / 9;
 }
 
 /* ***************************** */
@@ -167,5 +221,16 @@ pre code, pre code {
 
     .proj-gallery img {
         height: auto;
+    }
+
+    .airplane-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .airplane-prompt,
+    .airplane-photo,
+    .airplane-instructions {
+        grid-column: 1;
+        grid-row: auto;
     }
 }
