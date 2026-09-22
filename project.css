@@ -151,6 +151,17 @@ pre code, pre code {
     border-radius: var(--radius);
 }
 
+.top-gallery {
+    grid-template-columns: repeat(2, minmax(160px, 1fr));
+    align-items: center;
+}
+
+.top-gallery img {
+    max-height: 280px;
+    width: 100%;
+    object-fit: contain;
+}
+
 /* Optional block: an embedded video (e.g. YouTube). The padding-top  */
 /* trick keeps a 16:9 shape at any screen width — do not set a fixed  */
 /* pixel height on the iframe itself.                                  */
