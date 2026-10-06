@@ -151,6 +151,27 @@ pre code, pre code {
     border-radius: var(--radius);
 }
 
+.square-media-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+    align-items: stretch;
+}
+
+.square-media-row > .proj-video-container {
+    box-sizing: border-box;
+    width: 100%;
+    padding-top: 75%;
+    margin: 0;
+    min-width: 0;
+    border-radius: var(--radius);
+}
+
+.square-media-row > .proj-video-container video {
+    object-fit: contain;
+}
+
 .top-gallery {
     grid-template-columns: repeat(2, minmax(160px, 1fr));
     align-items: center;
