@@ -156,6 +156,10 @@ body {
     border-radius: calc(var(--radius) - 4px);
 }
 
+.astronaut-cover {
+    aspect-ratio: 16 / 9;
+}
+
 /* ***************************** */
 /* Responsive: tablet and mobile */
 /* ***************************** */
