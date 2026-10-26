@@ -1,0 +1,51 @@
+# Assumed setup: motors are connected to ports B, C, and E.
+# The other hub must broadcast 0 or 1 on channel "!O".
+from spikecomm import Scanner
+from hub import port
+import runloop
+import motor
+
+# Change these values to set the motor turns and pause time.
+E_TURN_DEGREES = 3600
+B_TURN_DEGREES = 17 * 360
+MOTOR_SPEED = 360
+E_PAUSE_MS = 5000
+
+# This stores the broadcasted option; None means no valid value has arrived.
+option = None
+
+def on_option(values):
+    # Save the received value only if it is 0 or 1.
+    global option
+    if len(values) == 1 and (values[0] == 0 or values[0] == 1):
+        option = values[0]
+
+# Listen on the same channel that the other hub broadcasts on.
+scanner = Scanner("!O")
+scanner.listen(on_option)
+
+async def main():
+    # Wait for the other hub to broadcast a valid option.
+    print("Waiting to receive option 0 or 1...")
+    while option is None:
+        await runloop.sleep_ms(20)
+
+    # Keep a local copy of the received option for choosing the action.
+    received_option = option
+    print("Received option:", received_option)
+
+    if received_option == 0:
+        # Option 0: turn motor E, pause, then turn it the opposite way.
+        await motor.run_for_degrees(port.E, E_TURN_DEGREES, -1000)
+        await runloop.sleep_ms(E_PAUSE_MS)
+        await motor.run_for_degrees(port.E, E_TURN_DEGREES, 1000)
+
+    else:
+        # Option 1: turn motor C, reverse it, then turn motor B.
+        await motor.run_for_degrees(port.C, 360, MOTOR_SPEED)
+        await runloop.sleep_ms(4000)
+        await motor.run_for_degrees(port.C, 360, -MOTOR_SPEED)
+        await runloop.sleep_ms(1000)
+        await motor.run_for_degrees(port.B, B_TURN_DEGREES, 1000)
+
+runloop.run(main())
