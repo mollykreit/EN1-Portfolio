@@ -1,0 +1,115 @@
+# Setup: force sensors are connected to ports A and B.
+# The other hub should listen on the same Beacon channel, "!O".
+from spikecomm import Beacon
+from hub import port, light_matrix, motion_sensor
+import runloop
+import force_sensor
+import random
+
+# Pixel brightness values for the ghost, arranged row by row.
+GHOST_IMAGE = [
+    0, 100, 100, 100, 0,
+    100, 100, 100, 100, 100,
+    100, 0, 100, 0, 100,
+    100, 100, 100, 100, 100,
+    100, 0, 100, 0, 100
+]
+
+# Pixel brightness values for the pumpkin, arranged row by row.
+PUMPKIN_IMAGE = [
+    0, 0, 100, 100, 0,
+    0, 0, 100, 0, 0,
+    100, 100, 100, 100, 100,
+    100, 100, 100, 100, 100,
+    100, 100, 100, 100, 100
+]
+
+async def main():
+    # Set up the broadcaster on the channel the other hub listens to.
+    result_beacon = Beacon("!O")
+
+    # Keep running games, waiting for a hub tap before each one.
+    while True:
+        # Wait for a fresh hub tap to start this game.
+        print("Tap the hub to start.")
+        while motion_sensor.gesture() == motion_sensor.TAPPED:
+            await runloop.sleep_ms(10)
+        while motion_sensor.gesture() != motion_sensor.TAPPED:
+            await runloop.sleep_ms(10)
+
+        # Choose a random sequence length from 3 through 8.
+        sequence_length = random.randint(3, 8)
+        image_sequence = []
+
+        # Show and remember a random ghost or pumpkin for each round.
+        for round_number in range(sequence_length):
+            image_choice = random.randint(0, 1)
+            image_sequence.append(image_choice)
+
+            if image_choice == 0:
+                light_matrix.show(GHOST_IMAGE)
+            else:
+                light_matrix.show(PUMPKIN_IMAGE)
+
+            # Keep the image visible briefly, then turn the display dark.
+            await runloop.sleep_ms(1000)
+            light_matrix.clear()
+
+            # Wait before showing the next image.
+            await runloop.sleep_ms(1000)
+
+        # Tell the player which sensor matches each image.
+        print("Repeat the sequence: sensor A for ghost, sensor B for pumpkin.")
+
+        # Assume the player is correct unless an answer is wrong or times out.
+        game_result = 0
+
+        # Check each force-sensor answer in the sequence.
+        for round_number in range(sequence_length):
+            if round_number == 0:
+                # Wait without a timer for the first guess.
+                while not force_sensor.pressed(port.A) and not force_sensor.pressed(port.B):
+                    await runloop.sleep_ms(10)
+            else:
+                # Allow up to five seconds for each later guess.
+                wait_time_ms = 0
+                while (not force_sensor.pressed(port.A)
+                       and not force_sensor.pressed(port.B)
+                       and wait_time_ms < 5000):
+                    await runloop.sleep_ms(10)
+                    wait_time_ms = wait_time_ms + 10
+
+                # Record an incorrect result if time runs out.
+                if not force_sensor.pressed(port.A) and not force_sensor.pressed(port.B):
+                    game_result = 1
+                    break
+
+            # Sensor A means ghost; sensor B means pumpkin.
+            if force_sensor.pressed(port.A):
+                player_choice = 0
+            else:
+                player_choice = 1
+
+            # Record an incorrect result if the answer does not match.
+            if player_choice != image_sequence[round_number]:
+                game_result = 1
+                break
+
+            # Wait for the sensor to be released before the next guess.
+            while force_sensor.pressed(port.A) or force_sensor.pressed(port.B):
+                await runloop.sleep_ms(10)
+
+        # Print and broadcast the result once after this game is finished.
+        if game_result == 0:
+            print("correct")
+        else:
+            print("incorrect")
+
+        result_beacon.broadcast(game_result)
+        light_matrix.clear()
+
+        # Wait for the current tap gesture to pass before asking for another.
+        while motion_sensor.gesture() == motion_sensor.TAPPED:
+            await runloop.sleep_ms(10)
+
+runloop.run(main())
