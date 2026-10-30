@@ -1,7 +1,6 @@
 # Setup: force sensors are connected to ports A and B.
-# The other hub should listen on the same Beacon channel, "!O".
 from spikecomm import Beacon
-from hub import port, light_matrix, motion_sensor
+from hub import port, light_matrix
 import runloop
 import force_sensor
 import random
@@ -28,13 +27,17 @@ async def main():
     # Set up the broadcaster on the channel the other hub listens to.
     result_beacon = Beacon("!O")
 
-    # Keep running games, waiting for a hub tap before each one.
+    # Keep running games, waiting for a force-sensor press before each one.
     while True:
-        # Wait for a fresh hub tap to start this game.
-        print("Tap the hub to start.")
-        while motion_sensor.gesture() == motion_sensor.TAPPED:
+        # Ask the player to press either force sensor to start.
+        print("Press either force sensor to start.")
+
+        # Wait until at least one sensor is pressed.
+        while not force_sensor.pressed(port.A) and not force_sensor.pressed(port.B):
             await runloop.sleep_ms(10)
-        while motion_sensor.gesture() != motion_sensor.TAPPED:
+
+        # Wait until both sensors are released so the start press is not a guess.
+        while force_sensor.pressed(port.A) or force_sensor.pressed(port.B):
             await runloop.sleep_ms(10)
 
         # Choose a random sequence length from 3 through 8.
@@ -84,32 +87,41 @@ async def main():
                     game_result = 1
                     break
 
-            # Sensor A means ghost; sensor B means pumpkin.
+            # Sensor A means ghost; display the ghost when sensor A is pressed.
             if force_sensor.pressed(port.A):
                 player_choice = 0
+                light_matrix.show(GHOST_IMAGE)
             else:
+                # Sensor B means pumpkin; display the pumpkin when sensor B is pressed.
                 player_choice = 1
+                light_matrix.show(PUMPKIN_IMAGE)
+
+            # Keep the chosen image displayed until the sensor is released.
+            while force_sensor.pressed(port.A) or force_sensor.pressed(port.B):
+                await runloop.sleep_ms(10)
+
+            # Turn off the display after the sensor is released.
+            light_matrix.clear()
 
             # Record an incorrect result if the answer does not match.
             if player_choice != image_sequence[round_number]:
                 game_result = 1
                 break
 
-            # Wait for the sensor to be released before the next guess.
-            while force_sensor.pressed(port.A) or force_sensor.pressed(port.B):
-                await runloop.sleep_ms(10)
-
-        # Print and broadcast the result once after this game is finished.
+        # Show and broadcast the result once the game is finished.
         if game_result == 0:
             print("correct")
+            result_beacon.broadcast(0)
+            light_matrix.show_image(light_matrix.IMAGE_YES)
         else:
             print("incorrect")
+            result_beacon.broadcast(1)
+            light_matrix.show_image(light_matrix.IMAGE_NO)
 
-        result_beacon.broadcast(game_result)
+        # Keep the result icon visible during the five-second cooldown.
+        await runloop.sleep_ms(5000)
+
+        # Clear the display; the next loop waits for a new start press.
         light_matrix.clear()
-
-        # Wait for the current tap gesture to pass before asking for another.
-        while motion_sensor.gesture() == motion_sensor.TAPPED:
-            await runloop.sleep_ms(10)
 
 runloop.run(main())
