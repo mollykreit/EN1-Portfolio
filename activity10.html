@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Activity 10: Smart Walker</title>
+    <link rel="stylesheet" href="./project.css">
+</head>
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="./index.html" class="active">Home</a>
+        </nav>
+    </header>
+
+    <div class="proj-container">
+
+        <h1 class='proj-header'>Project Portfolio</h1>
+
+        <h2 class='proj-header'>Activity 10: Smart Walker</h2>
+
+        <div class="proj-img-container">
+            <img src="./images/walk1.jpg" alt="Silly walker robot built with a SPIKE hub and leg mechanisms">
+        </div>
+
+        <div class="proj-gallery">
+            <img src="./images/walk2.png" alt="Q-table showing values for heading states and wheel-speed actions">
+        </div>
+
+        <div class="proj-video-container">
+            <video controls aria-label="Smart walker robot video">
+                <source src="./images/walk3.mp4" type="video/mp4">
+                Your browser does not support the video element.
+            </video>
+        </div>
+
+        <div class="proj-desc">
+            <p>Building on the Color Search activity, we trained our silly walker robots to walk in a straight line. We used a more complicated Q-table: its states represented how far the robot was drifting left or right, and its actions adjusted the wheel motor speeds.</p>
+            <p>The training did not work well with very complicated leg configurations, and I kept getting negative values across the Q-table. My motor also disconnected during training, which reset my progress, so I was not able to deploy my modified robot with simpler legs. I worked with someone else whose robot walked much straighter after training, though it still sometimes turned and went off track.</p>
+            <p>Code: <a href="https://github.com/edanahy/RLwithSPIKE/blob/main/rl_smart_walker.py">View the Smart Walker code on GitHub</a>.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>

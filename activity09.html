@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Activity 9: Color Search</title>
+    <link rel="stylesheet" href="./project.css">
+</head>
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="./index.html" class="active">Home</a>
+        </nav>
+    </header>
+
+    <div class="proj-container">
+
+        <h1 class='proj-header'>Project Portfolio</h1>
+
+        <h2 class='proj-header'>Activity 9: Color Search</h2>
+
+        <div class="proj-img-container">
+            <img src="./images/color1.jpg" alt="Color sensor and colored LEGO bricks arranged for the Color Search activity">
+        </div>
+
+        <div class="proj-gallery">
+            <img src="./images/color2.png" alt="Web interface visualizing the color track and the robot's Q-table">
+        </div>
+
+        <div class="proj-desc">
+            <p>In this activity, we learned about reinforcement learning by trying to get our robots to find a green LEGO brick. Each action received a small negative reward, hitting a black boundary piece received a large negative reward and ended the game, and finding the green brick received a very large positive reward.</p>
+            <p>We used a web interface to visualize how the robot learned whether moving left or right by one color was the better action. After the learning stage, we deployed what the robot had learned and tried to find the green brick. We also experimented with changing the learning setup: rearranging the colors during training, adding or removing colors before deployment, and adding two of the same color.</p>
+            <p>Code: <a href="https://github.com/edanahy/RLwithSPIKE/blob/main/rl_color_search.py">View the Color Search code on GitHub</a>.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
